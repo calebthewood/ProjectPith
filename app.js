@@ -15,7 +15,7 @@ const { NotFoundError } = require("./expressError");
 
 const morgan = require("morgan");
 
-const notion = require("./notionSDK")
+const Notion = require("./notionAPI")
 
 const app = express();
 
