@@ -15,8 +15,8 @@ const { NotFoundError } = require("./expressError");
 
 const morgan = require("morgan");
 
-const Notion = require("./notionAPI")
-
+const Notion = require("./notionAPI");
+const BlogDB = require("./db");
 const app = express();
 
 app.use(cors());
