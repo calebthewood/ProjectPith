@@ -1,55 +1,46 @@
-const MongoDB = require("../db.js")
+const client = require("../db.js");
+const { DATABASE } = require("../config");
 const { BadRequestError, NotFoundError } = require("../expressError");
-
-// await MongoDB.close(); use in controller
+require("colors");
 
 class BlogPosts {
-  constructor() { //confirm this works, might switch to static
-    this.database = "project_pith";
-    this.collection = "blog_posts";
-  }
+  static db = client.db(DATABASE).collection("blog_posts");
 
   static async create(post) {
-      const result = await MongoDB.db(this.database).collection(this.collection).insertOne(post);
-      if (result) {
-        console.log(`New listing created with the following id: ${result.insertedId}`.yellow);
-        return result;
-      } else {
-        throw new BadRequestError(`Duplicate Entry: ${post}`)
-      }
-
+    const result = BlogPosts.db.insertOne(post);
+    // const result = await db.db(BlogPosts.database).collection(BlogPosts.collection).insertOne(post);
+    if (!result) throw new BadRequestError(`Duplicate Entry: ${post}`);
+    console.log(`New listing created with the following id: ${result.insertedId}`.yellow);
+    return result;
   }
 
   static async createMany(posts) {
-      const result = await MongoDB.db(this.database).collection(this.collection).insertMany(posts);
-      if (result) {
-        console.log(`${result.insertedCount} new listing(s) created with the following id(s):`.yellow);
-        console.table(result.insertedIds);
-        return result;
-      } else {
-        throw new BadRequestError(`Duplicate Entry: ${posts}`)
-      }
+    const result = await BlogPosts.db.insertMany(posts);
+    if (!result) throw new BadRequestError(`Duplicate Entry: ${posts}`);
+    console.log(`${result.insertedCount} new listing(s) created with the following id(s):`.yellow);
+    console.table(result.insertedIds);
+    return result;
   }
 
   static async getById(pageId) {
-      const result = await MongoDB.db(this.database).collection(this.collection).findOne({ _id: pageId });
-      if (result) {
-        console.log(`Found a listing'${pageId}':`.yellow);
-        console.table(result);
-        return result;
-      } else {
-        throw new NotFoundError(`No listings found with the name '${pageId}'`);
-      }
+    const result = await BlogPosts.db.findOne({ "_id": pageId });
+    if (!result) throw new NotFoundError(`No listings found with the ID:  ${pageId}`);
+    console.log("Found a record for: ".yellow, pageId);
+    console.log(result);
+    return result;
   }
 
-  static async getAll(options = {}) {
-      const result = await MongoDB.db(this.database).collection(this.collection).find(options)
-      if (result) {
-        console.log(`Found a listings'${nameOfListing}':`.yellow);
-        return result;
-      } else {
-        throw new NotFoundError("No listings found");
-      }
+  static async getAll() {
+    const result = await BlogPosts.db.find({}).toArray();
+    //.sort({ _id: -1 }).limit(10) -- set it up to query all and get the 10 most recent
+    if (!result) throw new NotFoundError("No listings found");
+    console.log("Found posts:  ".yellow);
+    console.log(result);
+    return result;
+  }
+
+  static async close() {
+    await client.close();
   }
 
 }

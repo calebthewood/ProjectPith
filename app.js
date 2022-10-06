@@ -26,7 +26,6 @@ app.use(morgan("tiny"));
 // app.use("/auth", authRoutes);
 app.use("/blog", blogRoutes);
 
-
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {
   throw new NotFoundError();
