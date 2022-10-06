@@ -2,6 +2,7 @@ const { Client, APIErrorCode } = require("@notionhq/client");
 const { NOTION_DATABASE_ID, NOTION_TOKEN } = require("./config");
 
 const canvasPageId = '184f3a9e62c74f15871e114bd1b256ea';
+const post1 = '047de6519c934c38ba46728227a5e77a';
 
 /* I would like to confirm whether this better to initialize
 client inside a class or outside. Leaving sample here for now.
@@ -45,7 +46,7 @@ class Notion {
    * containing the db properties of a page. To
    * fetch page content use fetch block children.
    */
-  static async getPageObject(pageId){
+  static async getPageObject(pageId) {
     const response = await this.notion.pages.retrieve({ page_id: pageId });
     return response;
   };
@@ -61,15 +62,16 @@ class Notion {
       block_id: blockId,
       page_size: 50,
     });
-    //gets code block out.
-    response.results.forEach(block => {
-      if (block.type === 'code') {
-        console.log(block.code.rich_text[0].plain_text);
-      }
-    });
-
-    // console.log(response);
+    return response.results;
   };
+
+  static parseBlockChildren(list) {
+    const blocks = list.map(block => {
+
+    });
+  }
+  // block.code.rich_text[0].plain_text
+
 
   /**
    * Not in use. Allows for querying of a Notion DB.
@@ -105,14 +107,42 @@ class Notion {
     console.log(response.results[0].properties.Posts.title);
   };
 
+  static async buildBlogPost(pageId) {
+    const goodBlocks = new Set([
+      'paragraph', 'heading_1', 'heading_2', 'heading_3', 'code']);
+    const pageObject = await this.getPageObject(pageId);
+    const blocks = await this.getBlockChildren(pageId);
+    const parsedBlocks = blocks.filter(block => {
+      if (goodBlocks.has(block.type)) {
+        return {
+          id: block.id,
+          type: block.type,
+          content: [block.type]
+        };
+      }
+    });
+    // This extracts only the data from the notion sdk that I want to keep.
+    // As I add more features, notion has lots more data to use.
+    return {
+      id: pageObject.id,
+      author: pageObject.properties.author.rich_text[0].plain_text,
+      date: pageObject.properties.date.date.start,
+      tags: pageObject.properties.tags.multi_select,
+      project: pageObject.properties.project.rich_text[0].plain_text,
+      title: pageObject.properties.post.title[0].plain_text,
+      blocks: parsedBlocks,
+    };
+  }
+
 }
 
-// REMINDER for how to properly interact with Notion API
-async function printData(){
-  let data = await Notion.getPageObject(canvasPageId)
-  console.log(data)
+/** For Exploring Notion Data, edit as needed */
+async function printData(postId) {
+  let pageObject = await Notion.getPageObject(postId);
+  let blocks = await Notion.getBlockChildren(postId);
+  console.log("data:  ".red,blocks);
 }
 
-
+// printData();
 
 module.exports = Notion;
