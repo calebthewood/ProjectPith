@@ -23,6 +23,7 @@ class Notion {
    * fetch page content use fetch block children.
    */
   static async getPageObject(pageId) {
+    console.log("In getPageObject:          ", pageId)
     const response = await this.notion.pages.retrieve({ page_id: pageId });
     return response;
   };
@@ -64,12 +65,13 @@ class Notion {
     });
     // This extracts only the data from the notion sdk that I want to keep.
     // As I add more features, notion has lots more data to use.
+    console.log("pageObject    ".yellow, pageObject)
     return {
       _id: pageObject.id,
       author: pageObject.properties.author.rich_text[0].plain_text,
-      date: pageObject.properties.date.date.start,
-      tags: pageObject.properties.tags.multi_select,
-      project: pageObject.properties.project.rich_text[0].plain_text,
+      date: pageObject.properties.date.date.start, // may do the date myself?
+      tags: pageObject.properties.tags.multi_select || [],
+      project_id: pageObject.properties.project_id.rich_text[0].plain_text || "none",
       title: pageObject.properties.post.title[0].plain_text,
       blocks: parsedBlocks,
     };
