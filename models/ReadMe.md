@@ -12,3 +12,5 @@
 - Will need to make pipeline more resilient. Notion is very lax about data so it'll be up to me to put the correct data in there - still, would be nice for the server to not break if a minor field is missing.
 
 - Stretch goals: Upsert functionality will allow me to easily update things like tags after I've uploaded data. I'll try not to change content too often, but metadata changes may be useful. It's likely I'll come up with better tag ideas later on
+
+- Todo: I removed the db.close() b/c of conenction bugs, but that may be fixed. I had left the notion and BlogDB clients in app so they were being invoked more than once. I think this was the root, but I'll circle back and add closing logic after tidying up the basics.

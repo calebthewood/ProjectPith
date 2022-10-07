@@ -1,5 +1,6 @@
 const { Client, APIErrorCode } = require("@notionhq/client");
 const { NOTION_DATABASE_ID, NOTION_TOKEN } = require("./config");
+const { today } = require("./helpers/helpers");
 
 const canvasPageId = '184f3a9e62c74f15871e114bd1b256ea';
 const post1 = '047de6519c934c38ba46728227a5e77a';
@@ -23,7 +24,7 @@ class Notion {
    * fetch page content use fetch block children.
    */
   static async getPageObject(pageId) {
-    console.log("In getPageObject:          ", pageId)
+    console.log("In getPageObject:          ", pageId);
     const response = await this.notion.pages.retrieve({ page_id: pageId });
     return response;
   };
@@ -63,16 +64,20 @@ class Notion {
         };
       }
     });
-    // This extracts only the data from the notion sdk that I want to keep.
-    // As I add more features, notion has lots more data to use.
-    console.log("pageObject    ".yellow, pageObject)
+
+    // Extracting only the data I'm currently using, may expand this later.
+    // posterity, how to get page object date: pageObject.properties.date?.date.start
+    let title = pageObject.properties.post.title[0].plain_text;
+
+    let slug = title.split(" ").join("-").toLowerCase() + "-" + today; // for client routing and filtering.
     return {
       _id: pageObject.id,
+      slug: slug,
+      title: title,
       author: pageObject.properties.author.rich_text[0].plain_text,
-      date: pageObject.properties.date.date.start, // may do the date myself?
+      date: today, // may do the date myself?
       tags: pageObject.properties.tags.multi_select || [],
-      project_id: pageObject.properties.project_id.rich_text[0].plain_text || "none",
-      title: pageObject.properties.post.title[0].plain_text,
+      project_id: pageObject.properties.project_id.rich_text[0].plain_text || false,
       blocks: parsedBlocks,
     };
   }

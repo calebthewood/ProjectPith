@@ -3,11 +3,11 @@ const { DATABASE } = require("../config");
 const { BadRequestError, NotFoundError } = require("../expressError");
 require("colors");
 
+const db = client.db(DATABASE).collection("blog_posts");
 class BlogPosts {
-  static db = client.db(DATABASE).collection("blog_posts");
 
   static async create(post) {
-    const result = BlogPosts.db.insertOne(post);
+    const result = db.insertOne(post);
     // const result = await db.db(BlogPosts.database).collection(BlogPosts.collection).insertOne(post);
     if (!result) throw new BadRequestError(`Duplicate Entry: ${post}`);
     console.log(`New listing created with the following id: ${result.insertedId}`.yellow);
@@ -15,7 +15,7 @@ class BlogPosts {
   }
 
   static async createMany(posts) {
-    const result = await BlogPosts.db.insertMany(posts);
+    const result = await db.insertMany(posts);
     if (!result) throw new BadRequestError(`Duplicate Entry: ${posts}`);
     console.log(`${result.insertedCount} new listing(s) created with the following id(s):`.yellow);
     console.table(result.insertedIds);
@@ -23,7 +23,7 @@ class BlogPosts {
   }
 
   static async getById(pageId) {
-    const result = await BlogPosts.db.findOne({ "_id": pageId });
+    const result = await db.findOne({ "_id": pageId });
     if (!result) throw new NotFoundError(`No listings found with the ID:  ${pageId}`);
     console.log("Found a record for: ".yellow, pageId);
     console.log(result);
@@ -31,12 +31,17 @@ class BlogPosts {
   }
 
   static async getAll() {
-    const result = await BlogPosts.db.find({}).toArray();
-    //.sort({ _id: -1 }).limit(10) -- set it up to query all and get the 10 most recent
-    if (!result) throw new NotFoundError("No listings found");
-    console.log("Found posts:  ".yellow);
-    console.log(result);
-    return result;
+    try {
+      const result = await db.find({}).toArray();
+      //.sort({ _id: -1 }).limit(10) -- set it up to query all and get the 10 most recent
+      if (!result) throw new NotFoundError("No listings found");
+      console.log("Found posts:  ".yellow);
+      console.log(result);
+      return result;
+    } catch (e) {
+      console.error(e)
+    }
+
   }
 
   static async close() {
