@@ -6,6 +6,7 @@ const express = require("express");
 const cors = require("cors");
 const { NotFoundError } = require("./expressError");
 const blogRoutes = require("./routes/blog");
+const tweetsRoutes = require("./routes/tweets");
 const morgan = require("morgan");
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 app.use("/blog", blogRoutes);
+app.use("/tweets", tweetsRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {

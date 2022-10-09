@@ -18,8 +18,10 @@ const DATABASE = process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE : p
 // WJB: Evaluate in 2021 if this should be increased to 13 for non-test use
 const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
 
+// 3rd Party API Config
 const NOTION_TOKEN = process.env.NOTION_TOKEN || null;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || null;
+const TWITTER_TOKEN=process.env.TWITTER_TOKEN || null;
 
 console.log("Pith Config:".green);
 console.log("SECRET_KEY:".yellow, SECRET_KEY);
@@ -37,4 +39,5 @@ module.exports = {
   DATABASE,
   NOTION_TOKEN,
   NOTION_DATABASE_ID,
+  TWITTER_TOKEN,
 };
