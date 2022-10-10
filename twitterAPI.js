@@ -38,7 +38,7 @@ class TwitterAPI {
       },
       headers: {
         cookie: 'guest_id_marketing=v1%253A166527832151739869; guest_id_ads=v1%253A166527832151739869; personalization_id=%22v1_Mmk0yjEwXkdAVaHCDiDi1g%3D%3D%22; guest_id=v1%253A166527832151739869',
-        Authorization: `Bearer AAAAAAAAAAAAAAAAAAAAAIbbhwEAAAAAnljJiQ8nQ8UvcIygQMQcPFWU36Y%3DzbYibHAkB079g0CAeL90GSQ6Ix6ki6SZcU1vdi4e3T2dGxGwAp`
+        Authorization: `Bearer ${TWITTER_TOKEN}`
       }
     };
     const { data } = await axios.request(options);
