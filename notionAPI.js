@@ -55,15 +55,15 @@ class Notion {
       'paragraph', 'heading_1', 'heading_2', 'heading_3', 'code']);
     const pageObject = await this.getPageObject(pageId);
     const blocks = await this.getBlockChildren(pageId);
-    const parsedBlocks = blocks.filter(block => {
-      if (goodBlocks.has(block.type)) {
+    const parsedBlocks = blocks.filter(
+      block => goodBlocks.has(block.type)).map(block => {
         return {
           id: block.id,
           type: block.type,
           content: block[block.type]
         };
-      }
-    });
+      });
+
 
     // Extracting only the data I'm currently using, may expand this later.
     // posterity, how to get page object date: pageObject.properties.date?.date.start

@@ -32,8 +32,6 @@ class Metrics {
     return res;
   }
 
-
-
   /* payload.
       passerby: '793c1a73-e71c-4666-b702-92291a2d484a',
       created: '2022-9-10',
@@ -59,7 +57,7 @@ class Metrics {
 
     try {
       res = await Metrics.db.updateOne(query, updateDoc, options);
-      console.log("METRICS RESPONSE", res);
+      console.log("UPDATE SESSIONS", res);
 
     } catch (e) {
       console.log(e);
@@ -74,6 +72,18 @@ class Metrics {
       created: today,
     };
     return jwt.sign(payload, SECRET_KEY);
+  }
+
+  static async getMetrics() {
+    let res;
+    try {
+      res = await Metrics.db.find({}).toArray();
+      console.log("FETCH METRICS ".yellow, res)
+    } catch (e) {
+      console.error("Get Metrics Error:  ".red, e);
+      res = { error: "Error Fetching Metrics" };
+    }
+    return res;
   }
 }
 

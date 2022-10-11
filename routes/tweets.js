@@ -4,7 +4,7 @@ const express = require("express");
 
 const router = new express.Router();
 
-/** GET /posts
+/** GET /tweets/:tags
  *
  * Returns All Posts
  */

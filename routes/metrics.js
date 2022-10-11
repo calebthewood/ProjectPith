@@ -4,22 +4,15 @@ const express = require("express");
 const Metrics = require("../models/metrics");
 const router = new express.Router();
 
-// sample db model
-// let personalSite = {
-//   pages: {
-//     "about": 4,
-//     "home": 3,
-//   },
-//   visitors:
-//    _id: objID,
-//    uuid: 123456,
-//      sessions: [
-//        {
-//         date: today,
-//         routes ["/about", "home", etc...]
-//        }
-//      ];
 
+
+/** GET /metrics
+ *
+ */
+router.get("/", async (req, res, next) => {
+  const response = await Metrics.getMetrics()
+  return res.json({ response });
+});
 
 /** POST /metrics
  *
@@ -36,9 +29,9 @@ router.post("/", async (req, res, next) => {
   let sessionsRes;
   let response;
   try {
-    // pageViewRes = await Metrics.updatePageViews({ pathname, token });
-    response = await Metrics.updateSessions({ pathname, token });
-    // response = { sessionsRes, pageViewRes };
+    pageViewRes = await Metrics.updatePageViews({ pathname });
+    sessionsRes = await Metrics.updateSessions({ pathname, token });
+    response = { sessionsRes, pageViewRes };
   } catch (e) {
     console.log("Metrics Error:   ", e);
     response = "Error upserting page views for: " + pathname;

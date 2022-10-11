@@ -21,7 +21,7 @@ const BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
 // 3rd Party API Config
 const NOTION_TOKEN = process.env.NOTION_TOKEN || null;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID || null;
-const TWITTER_TOKEN=process.env.TWITTER_TOKEN || null;
+const TWITTER_TOKEN=process.env.TWITTER_BEARER_TOKEN;
 
 console.log("Pith Config:".green);
 console.log("SECRET_KEY:".yellow, SECRET_KEY);
