@@ -1,7 +1,7 @@
 {
-  "name": "projectpith",
+  "name": "project-pith",
   "version": "1.0.0",
-  "description": "(Mono repo for my personal projects)",
+  "description": "Mono-repo for my personal projects",
   "main": "app.js",
   "scripts": {
     "test": "jest -i",
