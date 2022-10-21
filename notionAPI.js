@@ -1,9 +1,9 @@
-const { Client, APIErrorCode } = require("@notionhq/client");
+const { Client } = require("@notionhq/client");
 const { NOTION_DATABASE_ID, NOTION_TOKEN } = require("./config");
 const { today } = require("./helpers/helpers");
 
-const canvasPageId = '184f3a9e62c74f15871e114bd1b256ea';
-const post1 = '047de6519c934c38ba46728227a5e77a';
+// const canvasPageId = '184f3a9e62c74f15871e114bd1b256ea';
+// const post1 = '047de6519c934c38ba46728227a5e77a';
 
 /* I would like to confirm whether this better to initialize
 client inside a class or outside. Leaving sample here for now.
@@ -25,8 +25,13 @@ class Notion {
    */
   static async getPageObject(pageId) {
     console.log("In getPageObject:          ", pageId);
-    const response = await this.notion.pages.retrieve({ page_id: pageId });
-    return response;
+    try {
+      const response = await this.notion.pages.retrieve({ page_id: pageId });
+      return response;
+    } catch (e) {
+      console.error("Notion Response: ", response)
+      console.error("Error getting notion page: ", e)
+    }
   };
 
   /**
@@ -36,11 +41,16 @@ class Notion {
    * to fetch nested data from a page, db, etc.
    */
   static async getBlockChildren(blockId) {
+    try {
     const response = await this.notion.blocks.children.list({
       block_id: blockId,
       page_size: 50,
     });
     return response.results;
+  } catch (e) {
+    console.error("Notion Response: ", response)
+    console.error("Error getting notion block children: ", e)
+  }
   };
 
   /**

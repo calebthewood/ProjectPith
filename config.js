@@ -9,7 +9,6 @@ const SECRET_KEY = process.env.SECRET_KEY || "secret-dev";
 
 const PORT = +process.env.PORT || 3001;
 
-// Todo: add test database...
 const DATABASE_URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_KEY}@cluster0.op83k.mongodb.net/?retryWrites=true&w=majority`;
 const DATABASE = process.env.NODE_ENV === "test" ? process.env.TEST_DATABASE : process.env.DATABASE;
 

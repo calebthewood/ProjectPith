@@ -6,9 +6,9 @@ require("colors");
 
 class BlogPosts {
   static db = client.db(DATABASE).collection("blog_posts");
+
   static async create(post) {
     const result = BlogPosts.db.insertOne(post);
-    // const result = await db.db(BlogPosts.database).collection(BlogPosts.collection).insertOne(post);
     if (!result) throw new BadRequestError(`Duplicate Entry: ${post}`);
     console.log(`New listing created with the following id: ${result.insertedId}`.yellow);
     return result;
@@ -23,11 +23,15 @@ class BlogPosts {
   }
 
   static async getById(pageId) {
-    const result = await BlogPosts.db.findOne({ "_id": pageId });
-    if (!result) throw new NotFoundError(`No listings found with the ID:  ${pageId}`);
-    console.log("Found a record for: ".yellow, pageId);
-    console.log(result);
-    return result;
+    try {
+      const result = await BlogPosts.db.findOne({ "_id": pageId });
+      if (!result) throw new NotFoundError(`No listings found with the ID:  ${pageId}`);
+      console.log("Found a record for: ".yellow, pageId);
+      console.log(result);
+      return result;
+    } catch (e) {
+      console.error("Bad Notion Request: ", e)
+    }
   }
 
   static async getAll() {
@@ -39,7 +43,7 @@ class BlogPosts {
       console.log(result);
       return result;
     } catch (e) {
-      console.error(e)
+      console.error("Error: ",e)
     }
 
   }
