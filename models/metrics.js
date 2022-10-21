@@ -8,7 +8,7 @@ require("colors");
 
 
 class Metrics {
-  static db = client.db(DATABASE).collection("test_metrics");
+  static db = client.db(DATABASE).collection("metrics");
 
   static async updatePageViews({ pathname }) {
     const path = `personalSite${pathname}`;
