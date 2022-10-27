@@ -52,11 +52,10 @@ class TwitterAPI {
   using params in the get request, but that would be preferred.*/
   async filterByHashtag(tag) {
     if (!tag in this.tags) return "Hashtag not present.";
-    let tagList = new Set(this.tags[tag]);
 
+    let tagList = new Set(this.tags[tag]);
     let tweetList = await this.getMyTweets();
 
-    console.log("TWEET LIST ".yellow, tweetList);
     const filteredTweets = [];
     for (let tweet of tweetList) {
       if ("entities" in tweet && "hashtags" in tweet.entities) {

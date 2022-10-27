@@ -24,13 +24,12 @@ class Notion {
    * fetch page content use fetch block children.
    */
   static async getPageObject(pageId) {
-    console.log("In getPageObject:          ", pageId);
     try {
       const response = await this.notion.pages.retrieve({ page_id: pageId });
       return response;
     } catch (e) {
-      console.error("Notion Response: ", response)
-      console.error("Error getting notion page: ", e)
+      console.error("Notion Response: ", response);
+      console.error("Error getting notion page: ", e);
     }
   };
 
@@ -42,15 +41,15 @@ class Notion {
    */
   static async getBlockChildren(blockId) {
     try {
-    const response = await this.notion.blocks.children.list({
-      block_id: blockId,
-      page_size: 50,
-    });
-    return response.results;
-  } catch (e) {
-    console.error("Notion Response: ", response)
-    console.error("Error getting notion block children: ", e)
-  }
+      const response = await this.notion.blocks.children.list({
+        block_id: blockId,
+        page_size: 50,
+      });
+      return response.results;
+    } catch (e) {
+      console.error("Notion Response: ", response);
+      console.error("Error getting notion block children: ", e);
+    }
   };
 
   /**
@@ -84,10 +83,10 @@ class Notion {
       _id: pageObject.id,
       slug: slug,
       title: title,
-      author: pageObject.properties.author.rich_text[0].plain_text,
-      date: today, // may do the date myself?
+      author: pageObject.properties.author.rich_text[0]?.plain_text || "Caleb Wood",
+      date: today,
       tags: pageObject.properties.tags.multi_select || [],
-      project_id: pageObject.properties.project_id.rich_text[0].plain_text || false,
+      project_id: pageObject.properties.project_id.rich_text[0]?.plain_text || "none",
       blocks: parsedBlocks,
     };
   }
