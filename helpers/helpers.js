@@ -3,8 +3,8 @@
 function yearDateMonth() {
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth();
-  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const day = today.getDate() + 1;
   return `${year}-${month}-${day}`;
 }
 const today = yearDateMonth();
