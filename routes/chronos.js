@@ -11,13 +11,12 @@ const router = new express.Router();
  */
 router.post("/", async function (req, res, next) {
 
-  const body = await req.body
-  const params = await req.params
-
   console.log("POST body: /chronos", req.body);
-
-
-  sendSms("Responding from localhost");
+  if (req.body.BODY === "Yes") {
+    sendSms("Thank you");
+  } else {
+    sendSms("Oopsie");
+  }
 
 });
 
@@ -28,7 +27,5 @@ router.get("/", async function (req, res, next) {
   console.log("GET: /chronos");
   return res.json({ msg: "GET Hello World" });
 });
-
-
 
 module.exports = router;
