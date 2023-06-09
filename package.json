@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "jest -i",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.10.0",
     "morgan": "^1.10.0",
+    "twilio": "^4.11.2",
     "twitter-api-v2": "^1.12.7"
   }
 }
