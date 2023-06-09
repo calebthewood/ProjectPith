@@ -1,3 +1,4 @@
+"use strict";
 /* Route(s) for Getting Metrics */
 
 const express = require("express");
