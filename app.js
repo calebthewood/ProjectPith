@@ -12,6 +12,7 @@ const tweetsRoutes = require("./routes/tweets");
 const metricsRoutes = require("./routes/metrics");
 const chronosRoutes = require("./routes/chronos");
 
+const cron = require("./apis/cron")
 const morgan = require("morgan");
 
 const app = express();

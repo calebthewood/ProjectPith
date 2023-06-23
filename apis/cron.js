@@ -9,11 +9,13 @@ const { sendSms } = require("../twilioAPI");
 
 - hourly: runs every hour from 8 - 5 on weekdays.
 
- Minutes: 0-59
- Hours: 0-23
- Day of Month: 1-31
- Months: 0-11 (Jan-Dec)
- Day of Week: 0-6 (Sun-Sat)
+cron system:
+ * Minutes: 0-59
+ * Hours: 0-23
+ * Day of Month: 1-31
+ * Months: 0-11 (Jan-Dec)
+ * Day of Week: 0-6 (Sun-Sat)
+
 */
 
 const daily = new CronJob(
@@ -30,10 +32,16 @@ const daily = new CronJob(
 const hourly = new CronJob(
   "* * * * * *",
   function () {
+    // if someVar is true, send this prompt at every hour (someVar can be changed with a Start/Stop sms)
     console.log("You will see this message every second");
+    sendSms("How was your hour spent. Select up to 4 (0 wasted, 1 work, 2 projects, 3 learning, 4 exercise, 5 chores, 6 hobby)");
   },
   null,
   false,
   "America/Los_Angeles"
 );
 // hourly.start() - use to
+
+module.exports = {
+  daily, hourly
+};

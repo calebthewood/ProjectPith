@@ -6,16 +6,27 @@ const { sendSms } = require("../twilioAPI");
 
 const router = new express.Router();
 
+
+
 /** POST /chronos
  *
  */
 router.post("/", async function (req, res, next) {
-
   console.log("POST body: /chronos", req.body);
-  if (req.body.BODY === "Yes") {
+
+  // step 1 - parse msg
+  // step 2 - if not valid, re prompt
+  // step 3 - if command (start/stop/help/inspo/totals)
+  //          - execute command
+  // step 4 - if hourly status msg
+  //          - update hourly sums
+  // step 5 - save msg to db
+  // step 6 - respond w/ confirmation
+
+  const response = req.body.Body;
+
+  if (response === "Yes") {
     sendSms("Thank you");
-  } else {
-    sendSms("Oopsie");
   }
 
 });
