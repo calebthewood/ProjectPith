@@ -11,6 +11,7 @@ const router = new express.Router();
 router.get("/:tag", async (req, res, next) => {
   const myTwitter = new TwitterAPI();
   let response = await myTwitter.filterByHashtag(req.params.tag);
+  console.log("Twitter Res: ",response);
   return res.json({response: response});
 });
 

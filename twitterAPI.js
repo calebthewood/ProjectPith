@@ -55,7 +55,7 @@ class TwitterAPI {
 
     let tagList = new Set(this.tags[tag]);
     let tweetList = await this.getMyTweets();
-
+    console.log("tweetList: ", tweetList);
     const filteredTweets = [];
     for (let tweet of tweetList) {
       if ("entities" in tweet && "hashtags" in tweet.entities) {

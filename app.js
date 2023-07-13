@@ -8,10 +8,11 @@ const cors = require("cors");
 const { NotFoundError } = require("./expressError");
 
 const blogRoutes = require("./routes/blog");
-const tweetsRoutes = require("./routes/tweets");
+// const tweetsRoutes = require("./routes/tweets");
 const metricsRoutes = require("./routes/metrics");
 const chronosRoutes = require("./routes/chronos");
 
+// cron under construction
 // const cron = require("./apis/cron")
 const morgan = require("morgan");
 
@@ -23,7 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("tiny"));
 
 app.use("/blog", blogRoutes);
-app.use("/tweets", tweetsRoutes);
+// app.use("/tweets", tweetsRoutes);
 app.use("/metrics", metricsRoutes);
 app.use("/chronos", chronosRoutes);
 
